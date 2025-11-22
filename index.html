@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Routines Quotidiennes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- En-tête -->
+        <header>
+            <h1>📅 Gestion des Routines Quotidiennes</h1>
+            <p class="subtitle">Organisez votre journée avec vos routines et Google Calendar</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="main-nav">
+            <button class="nav-btn active" data-view="routines">📝 Routines</button>
+            <button class="nav-btn" data-view="planning-previsionnel">📊 Planning Prévisionnel</button>
+            <button class="nav-btn" data-view="planning-reel">✅ Planning Réel</button>
+            <button class="nav-btn" data-view="statistiques">📈 Statistiques</button>
+        </nav>
+
+        <!-- Vue Routines -->
+        <section id="view-routines" class="view active">
+            <div class="view-header">
+                <h2>Gestion des Routines et Tâches</h2>
+                <button id="btn-add-routine" class="btn-primary">+ Ajouter une routine</button>
+            </div>
+
+            <div id="routines-container" class="routines-list">
+                <!-- Les routines seront générées dynamiquement -->
+            </div>
+
+            <div class="google-calendar-section">
+                <h3>Intégration Google Calendar</h3>
+                <button id="btn-google-auth" class="btn-secondary">🔐 Connexion Google Calendar</button>
+                <span id="google-status" class="status-indicator"></span>
+            </div>
+        </section>
+
+        <!-- Vue Planning Prévisionnel -->
+        <section id="view-planning-previsionnel" class="view">
+            <div class="view-header">
+                <h2>Planning Prévisionnel</h2>
+                <div class="actions">
+                    <button id="btn-generate-planning" class="btn-primary">🔄 Générer le planning</button>
+                    <div class="view-toggle">
+                        <button id="btn-view-timeline" class="btn-toggle active">Timeline</button>
+                        <button id="btn-view-list" class="btn-toggle">Liste</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="planning-date" class="planning-date"></div>
+
+            <div id="planning-timeline" class="timeline-container">
+                <!-- La timeline sera générée dynamiquement -->
+            </div>
+
+            <div id="planning-list" class="list-container" style="display: none;">
+                <!-- La liste sera générée dynamiquement -->
+            </div>
+        </section>
+
+        <!-- Vue Planning Réel -->
+        <section id="view-planning-reel" class="view">
+            <div class="view-header">
+                <h2>Planning Réel</h2>
+                <button id="btn-export-reel" class="btn-secondary">📥 Exporter</button>
+            </div>
+
+            <div id="planning-reel-date" class="planning-date"></div>
+
+            <div id="planning-reel-list" class="real-planning-container">
+                <!-- Les entrées réelles seront générées dynamiquement -->
+            </div>
+        </section>
+
+        <!-- Vue Statistiques -->
+        <section id="view-statistiques" class="view">
+            <div class="view-header">
+                <h2>Statistiques</h2>
+                <div class="stats-filters">
+                    <select id="stats-period">
+                        <option value="today">Aujourd'hui</option>
+                        <option value="week">Cette semaine</option>
+                        <option value="month">Ce mois</option>
+                        <option value="all">Tout</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>📊 Par Routine</h3>
+                    <div id="stats-by-routine"></div>
+                </div>
+
+                <div class="stat-card">
+                    <h3>📋 Par Tâche</h3>
+                    <div id="stats-by-task"></div>
+                </div>
+
+                <div class="stat-card">
+                    <h3>⏱️ Prévisionnel vs Réel</h3>
+                    <div id="stats-comparison"></div>
+                </div>
+
+                <div class="stat-card">
+                    <h3>🔥 Tâches les plus chronophages</h3>
+                    <div id="stats-time-consuming"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal pour créer/éditer une routine -->
+    <div id="modal-routine" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-routine-title">Nouvelle Routine</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label>
+                    Nom de la routine:
+                    <input type="text" id="routine-name" placeholder="Ex: Routine matinale">
+                </label>
+
+                <h4>Tâches</h4>
+                <div id="tasks-list" class="tasks-list">
+                    <!-- Les tâches seront ajoutées ici -->
+                </div>
+
+                <button id="btn-add-task" class="btn-secondary">+ Ajouter une tâche</button>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-cancel-routine" class="btn-secondary">Annuler</button>
+                <button id="btn-save-routine" class="btn-primary">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour créer/éditer une tâche -->
+    <div id="modal-task" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-task-title">Nouvelle Tâche</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label>
+                    Libellé:
+                    <input type="text" id="task-label" placeholder="Ex: Méditation">
+                </label>
+
+                <label>
+                    Durée estimée (minutes):
+                    <input type="number" id="task-duration" min="1" value="30">
+                </label>
+
+                <label class="checkbox-label">
+                    <input type="checkbox" id="task-secable" checked>
+                    Tâche sécable (peut être divisée)
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-cancel-task" class="btn-secondary">Annuler</button>
+                <button id="btn-save-task" class="btn-primary">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="calendarApi.js"></script>
+    <script src="routinesManager.js"></script>
+    <script src="scheduler.js"></script>
+    <script src="taskExecution.js"></script>
+    <script src="timelineView.js"></script>
+    <script src="stats.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
