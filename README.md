@@ -99,32 +99,40 @@ Puis accédez à `http://localhost:8000`
 
 ## ⚙️ Configuration Google Calendar
 
-### Pré-requis
+### 📖 Guide complet
 
-1. Un compte Google
-2. Un projet Google Cloud Platform
+**Consultez le guide détaillé:** [GOOGLE_CALENDAR_SETUP.md](GOOGLE_CALENDAR_SETUP.md)
 
-### Étapes
+Ce guide vous explique étape par étape comment:
+- Créer un projet Google Cloud
+- Activer l'API Google Calendar
+- Obtenir votre **API Key**
+- Obtenir votre **Client ID OAuth 2.0**
+- Configurer les autorisations
+- Résoudre les problèmes courants
 
-1. **Créer un projet sur Google Cloud Console**
-   - Allez sur https://console.cloud.google.com
-   - Créez un nouveau projet
+### ⚡ Résumé rapide
 
-2. **Activer l'API Google Calendar**
-   - Dans votre projet, allez dans "APIs & Services" > "Library"
-   - Recherchez "Google Calendar API"
-   - Cliquez sur "Enable"
+Vous avez besoin de 2 paramètres:
 
-3. **Créer des identifiants**
-   - Allez dans "APIs & Services" > "Credentials"
-   - Créez une API Key
-   - Créez un OAuth 2.0 Client ID (type: Web application)
-   - Ajoutez `http://localhost:8000` dans les Authorized JavaScript origins
+1. **API Key** - Pour accéder à l'API Google Calendar
+2. **Client ID** - Pour l'authentification OAuth 2.0
 
-4. **Configurer l'application**
-   - Dans l'app, cliquez sur "🔐 Connexion Google Calendar"
-   - Entrez votre Client ID et API Key
-   - Autorisez l'accès à votre calendrier
+**Pour les obtenir:**
+1. Allez sur https://console.cloud.google.com
+2. Créez un projet et activez "Google Calendar API"
+3. Créez une API Key (dans Credentials)
+4. Créez un OAuth 2.0 Client ID (type: Web application)
+5. Ajoutez `http://localhost:8000` dans "Authorized JavaScript origins"
+
+**Dans l'application:**
+1. Cliquez sur "🔐 Connexion Google Calendar"
+2. Entrez vos identifiants
+3. Autorisez l'accès
+
+### 🧪 Mode simulation
+
+Par défaut, l'application fonctionne en **mode simulation** avec des événements de test. Vous pouvez utiliser l'app sans configurer Google Calendar!
 
 ## 🏗️ Architecture
 
